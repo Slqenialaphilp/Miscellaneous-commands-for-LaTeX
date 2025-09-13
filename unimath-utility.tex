@@ -1,0 +1,7 @@
+\cs_new:Nn \ncm_generate_long_variant:Nnn {
+	\cs_new:Npe #1 {\use:c{math#2}{\Uhextensible width 1.484em 0 #3}}
+}
+
+\NewDocumentCommand{\DeclareUnimathAlias}{s m m}{
+	\AtBeginDocument{\NewCommandCopy {#2} {#3}}
+}
