@@ -15,13 +15,14 @@ CC0です。ご自由にお使いください。Issueなども歓迎します。
 使用例：  
 <img width="1498" height="710" alt="スクリーンショット 2025-09-13 025405" src="https://github.com/user-attachments/assets/1c092383-63c4-40e6-97c5-58144fdbe4d5" />
 
-### unimath-utility.tex
+### unimath-utility.tex, longvariant.tex
 `unicode-math`用の便利かもしれないコマンドをまとめています。  
 ```\DeclareUnimathAlias{<alias>}{original}```  
 `unicode-math`では`\begin{document}`へのフックで数学記号のコマンドが定義されるので、単にプリアンブルで`\NewDocumentCopy`を使うとエラーを吐きます。それを防ぐためだけの1行コマンドです。  
   
 ```\ncm_generate_long_variant:Nnn <cs> {<math class>} {<code point>}```
-長い矢印などを定義するときに使います。New Computer Modern用に作ったので名前空間が`ncm`だったり長さが1.484emでハードコードだったりしますが、それはともかく`\ncm_generate_long_variant:Nnn \longtwoheadrightarrow {rel} {"21A0}`のように使います。
+長い矢印などを定義するときに使います。New Computer Modern用に作ったので名前空間が`ncm`だったり長さが1.484emでハードコードだったりしますが、それはともかく`\ncm_generate_long_variant:Nnn \longtwoheadrightarrow {rel} {"21A0}`のように使います。  
+longvariant.texにNew Computer Modernが対応していそうなものを一通り書き並べてあります。
 
 ### prooftree.tex
 bussproofsパッケージを使った証明木をやや簡単に書けるようにしたコマンドです。  
@@ -44,3 +45,5 @@ bussproofsパッケージを使った証明木をやや簡単に書けるよう�
 	\Inf1[impR]{& (\lnot\varphi\rightarrow\lnot\psi) \rightarrow (\psi\rightarrow\varphi)}
 \end{prooftree}
 ```
+
+### mathutil
