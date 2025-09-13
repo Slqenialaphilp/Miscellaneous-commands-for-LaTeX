@@ -1,0 +1,44 @@
+% LuaLaTeX + unicode-math
+\str_new:N \fibbdl_size_str
+\int_new:N \fibbdl_format_spec_int
+\tl_new:N \fibbdl_strgrp_tl
+\tl_new:N \fibbdl_fib_tl
+\tl_new:N \fibbdl_proj_tl
+\tl_new:N \fibbdl_total_tl
+\tl_new:N \fibbdl_base_tl
+\dim_new:N \fibbdl_arrow_length_dim
+% format: {G?,F?;p?,E,B} , either of the six patterns below:
+% 0: E,B / 1: p,E,B / 2: F;E,B / 3: F;p,E,B / 4: G,F;E,B / 5: G,F;p,E,B
+\NewDocumentCommand{\FibBdl}{O{long} >{\SplitArgument{1}{;}}m}{
+	\str_gset:Nn \fibbdl_size_str {#1} %long / short / min / min*
+	\exp_args:NNo \clist_gset:Nn \g_tmpa_clist {\use_i:nn #2}
+	\exp_args:NNo \clist_gset:Nn \g_tmpb_clist {\use_ii:nn #2}
+	\str_case:NnF \fibbdl_size_str{
+		{min} {\exp_args:Noo \FibBdlMinimal {\g_tmpa_clist}{\g_tmpb_clist}}
+		{min*} {\exp_args:Noo \FibBdlMinimal* {\g_tmpa_clist}{\g_tmpb_clist}}
+		{long} {\dim_gset:Nn \fibbdl_arrow_length_dim {1.484em}}
+		{short} {\dim_gset:Nn \fibbdl_arrow_length_dim {1em}}
+	} {\dim_gset:Nn \fibbdl_arrow_length_dim {1em}}
+		\exp_args:Nx \IfValueTF{\clist_item:Nn \g_tmpb_clist {1}}{
+		\seq_gset_from_clist:NN \g_tmpa_seq \g_tmpa_clist % tmpa <- [G?,F]
+		\seq_gset_from_clist:NN \g_tmpb_seq \g_tmpb_clist % tmpb <- [p?,E,B]
+	} {
+		\seq_clear:N \g_tmpa_seq % tmpa <- []
+		\seq_gset_from_clist:NN \g_tmpb_seq \g_tmpa_clist % tmpb <- [p?,E,B]
+	}
+	% detect format spec
+	\int_gset:Nn \fibbdl_format_spec_int {\seq_count:N \g_tmpa_seq * 2 + \seq_count:N \g_tmpb_seq - 2}
+	\seq_pop_right:NN \g_tmpb_seq \fibbdl_base_tl
+	\seq_pop_right:NN \g_tmpb_seq \fibbdl_total_tl
+	\seq_pop_right:NN \g_tmpb_seq \fibbdl_proj_tl
+	\seq_pop_right:NN \g_tmpa_seq \fibbdl_fib_tl
+	\seq_pop_right:NN \g_tmpa_seq \fibbdl_strgrp_tl
+	\int_case:nn {\fibbdl_format_spec_int} {
+		{0} {\left(\fibbdl_total_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21A0}\fibbdl_base_tl\right)}
+		{1} {\left(\fibbdl_total_tl\mathrel{\Uoverdelimiter width~\fibbdl_arrow_length_dim~0~"21A0 {\fibbdl_proj_tl}}\fibbdl_base_tl\right)}
+		{2} {\left(\fibbdl_fib_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21AA}\fibbdl_total_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21A0}\fibbdl_base_tl\right)}
+		{3} {\left(\fibbdl_fib_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21AA}\fibbdl_total_tl\mathrel{\Uoverdelimiter width~\fibbdl_arrow_length_dim~0~"21A0 {\fibbdl_proj_tl}}\fibbdl_base_tl\right)}
+		{4} {\left(\fibbdl_strgrp_tl\curvearrowright\fibbdl_fib_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21AA}\fibbdl_total_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21A0}\fibbdl_base_tl\right)}
+		{5} {\left(\fibbdl_strgrp_tl\curvearrowright\fibbdl_fib_tl\mathrel{\Uhextensible width~\fibbdl_arrow_length_dim~0~"21AA}\fibbdl_total_tl\mathrel{\Uoverdelimiter width~\fibbdl_arrow_length_dim~0~"21A0 {\fibbdl_proj_tl}}\fibbdl_base_tl\right)}
+	}
+}
