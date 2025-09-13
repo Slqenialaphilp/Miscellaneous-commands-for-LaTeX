@@ -22,3 +22,25 @@ CC0です。ご自由にお使いください。Issueなども歓迎します。
   
 ```\ncm_generate_long_variant:Nnn <cs> {<math class>} {<code point>}```
 長い矢印などを定義するときに使います。New Computer Modern用に作ったので名前空間が`ncm`だったり長さが1.484emでハードコードだったりしますが、それはともかく`\ncm_generate_long_variant:Nnn \longtwoheadrightarrow {rel} {"21A0}`のように使います。
+
+### prooftree.tex
+bussproofsパッケージを使った証明木をやや簡単に書けるようにしたコマンドです。  
+基礎論の講義のために作って以来長らく使っていないので使い方をよく覚えていないのですが、`\Iniseq`・`\Inf{<0/1/2>}`を駆使していくようです。  
+使用例：
+```
+\begin{prooftree}
+	\IniSeq \varphi
+	\Inf1[wkL]{\psi,\,\varphi & \varphi}
+	\Inf1[exL]{\varphi,\,\psi & \varphi}
+	\Inf1[notR]{\psi & \varphi,\,\lnot\varphi}
+	\IniSeq \psi
+	\Inf1[wkR]{\psi & \psi,\,\varphi}
+	\Inf1[exR]{\psi & \varphi,\,\psi}
+	\Inf1[notL]{\lnot\psi,\,\psi & \varphi}
+	\Inf2[impL]{\psi,\,\psi,\,\lnot\varphi\rightarrow\lnot\psi & \varphi,\,\varphi}
+	\Inf1[cntL]{\psi,\,\lnot\varphi\rightarrow\lnot\psi & \varphi,\,\varphi}
+	\Inf1[cntR]{\psi,\,\lnot\varphi\rightarrow\lnot\psi & \varphi}
+	\Inf1[impR]{\lnot\varphi\rightarrow\lnot\psi & \psi\rightarrow\varphi}
+	\Inf1[impR]{& (\lnot\varphi\rightarrow\lnot\psi) \rightarrow (\psi\rightarrow\varphi)}
+\end{prooftree}
+```

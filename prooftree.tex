@@ -1,0 +1,35 @@
+% bussproofs
+\NewDocumentCommand{\InfRule}{m}{
+	\RightLabel{\scriptsize
+	（\str_case:nnF {#1}{
+		{wkL}{weakening; 左}
+		{wkR}{weakening; 右}
+		{cntL}{contraction; 左}
+		{cntR}{contraction; 右}
+		{exL}{exchange; 左}
+		{exR}{exchange; 右}
+		{cut}{cut}
+		{andL}{$\land$; 左}
+		{andR}{$\land$; 右}
+		{orL}{$\lor$; 左}
+		{orR}{$\lor$; 右}
+		{impL}{$\rightarrow$; 左}
+		{impR}{$\rightarrow$; 右}
+		{notL}{$\lnot$; 左}
+		{notR}{$\lnot$; 右}
+		{allL}{$\forall$; 左}
+		{allR}{$\forall$; 右}
+		{existL}{$\exists$; 左}
+		{existR}{$\exists$; 右}
+	}{#1}）
+	}
+}
+\cs_new:Nn \l_infer_aux:nn {#1\fCenter #2}
+\NewDocumentCommand{\Inf}{m o >{\SplitArgument{1}{&}}m}{
+	\IfValueT{#2}{\InfRule{#2}}
+	\str_case:nn{#1}{
+	{0}{\exp_after:wN\Axiom\exp_after:wN$\l_infer_aux:nn #3$}
+	{1}{\exp_after:wN\UnaryInf\exp_after:wN$\l_infer_aux:nn #3$}
+	{2}{\exp_after:wN\BinaryInf\exp_after:wN$\l_infer_aux:nn #3$}}
+}
+\NewDocumentCommand{\IniSeq}{m}{\Axiom$#1\fCenter #1$}
