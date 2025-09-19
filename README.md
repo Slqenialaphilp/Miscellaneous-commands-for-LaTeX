@@ -6,7 +6,11 @@ CC0です。欲望の許す限りご自由にお使いください。Issueなど
 
 ## ファイル・コマンド一覧
 コマンドの引数は`<意味>`で表します。特記のない限り括弧の種類と引数の扱いは慣習に従います。  
-最低限の情報しか書き下せていないはずなので、使い方がわからなかったら気軽に質問したりコードを眺めたりしてください。
+
+### slq-commands.sty
+下に書かれたファイルを個別のモジュールとして読み込めるようにするパッケージです。  
+`\UseSlqModules{prooftree,mathutil}`のように、使いたいものをカンマ区切りで入力してください。  
+動作に必要なパッケージが読み込まれていない場合には自動で読み込む他、LuaLaTeX使用時には`unicode-math`も読み込みます。
 
 ### FibBdl.tex
 **LuaLaTeXでのみ利用可能です。**  
@@ -14,7 +18,7 @@ CC0です。欲望の許す限りご自由にお使いください。Issueなど
 `<length>`は`short` / `long` （デフォルト） / `<dimension>`のいずれかに対応しています。いつかは`min`で`p: E-->>B`の形になるようにしたいとは思っています。  
 ファイバー束用のコマンドです。引数を省略する場合にはカンマとセミコロンを適宜省略してください。これらは内部で引数を区切るのに使われているので、必要に応じて引数を波括弧で囲ってください。  
 使用例：  
-<img width="1498" height="710" alt="スクリーンショット 2025-09-13 025405" src="https://github.com/user-attachments/assets/1c092383-63c4-40e6-97c5-58144fdbe4d5" />
+<img width="749" height="355" alt="\FibBdl の使用例" src="https://github.com/user-attachments/assets/1c092383-63c4-40e6-97c5-58144fdbe4d5" />
 
 ### unimath-utility.tex, longvariant.tex
 `unicode-math`用の便利かもしれないコマンドをまとめています。  
@@ -28,6 +32,7 @@ longvariant.texにNew Computer Modernが対応していそうなものを一通�
 ### prooftree.tex
 bussproofsパッケージを使った証明木をやや簡単に書けるようにしたコマンドです。  
 基礎論の講義のために作って以来長らく使っていないので使い方をよく覚えていないのですが、`\Iniseq`・`\Inf{<0/1/2>}`を駆使していくようです。  
+現状`\Inf`のオプションはLK用になっていますが、キーでない文字列が入力された場合にはそれが直接右側のラベルとして出力されるのでLK以外にも使うことは出来ます。気が向けばkey-val方式で書き直して拡張性を持たせまる予定です。  
 使用例：
 ```
 \begin{prooftree}
@@ -46,12 +51,12 @@ bussproofsパッケージを使った証明木をやや簡単に書けるよう�
 	\Inf1[impR]{& (\lnot\varphi\rightarrow\lnot\psi) \rightarrow (\psi\rightarrow\varphi)}
 \end{prooftree}
 ```
-<img width="1727" height="743" alt="image" src="https://github.com/user-attachments/assets/dbde5be9-4795-4645-bc60-3b6a6a49f018" />
+<img width="864" height="372" alt="使用例" src="https://github.com/user-attachments/assets/dbde5be9-4795-4645-bc60-3b6a6a49f018" />
 
 
 ### mathutil
 数学用の簡単なコマンドをまとめています。  
-`\vvec{<comma separated list>}`
+`\vvec{<comma separated list>}`  
 縦ベクトルを書くときに毎度`pmatrix`を書くのは辛いので、`\vvec{x,y,z}`のようにカンマ区切りで変数を入れられるようにしました。カンマは内部で区切り文字として扱われるので、`\FibBdl`同様必要に応じて波括弧で囲ってください。  
   
 `\sfrac{<numerator>}{<denominator>}`  
