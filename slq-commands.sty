@@ -1,0 +1,49 @@
+\ProvidesExplPackage{slq-commands}{2025-09-20}{1.0}{Commands by Slqenialaphilp}
+
+% automatically load unicode-math if luatex
+\sys_if_engine_luatex:T {
+	\RequirePackage{unicode-math}
+}
+
+% warnings
+\msg_new:nnn {slq_commands} {nofile} {
+	\msg_warning_text:n {slq-commands}\\
+	Since~'#1.tex'~does~not~exist,~the~file~will~not~be~loaded.
+}
+
+\msg_new:nnn {slq_commands} {luatex} {
+	\msg_error_text:n {slq-commands}\\
+	Since~'#1.tex'~requires~LuaLaTeX,~the~file~will~not~be~loaded.
+}
+
+% internal functions
+\cs_new:Npn \slq_load_if_lua:n #1 {
+	\sys_if_engine_luatex:TF {\IfFileLoadedF{#1.tex}{\file_if_exist_input:n {#1}}} {\msg_error:nne {slq_commands}{luatex}{#1}}
+}
+
+\cs_new:Npn \slq_load:n #1 {
+	\IfFileLoadedF{#1.tex}{\file_if_exist_input:n {#1}}
+}
+
+\cs_new:Npn \slq_load_module:n #1 {
+	\str_set:Nn \l_tmpa_str {#1} % tmpa_str <- module name
+	\str_remove_once:Nn \l_tmpa_str {.tex} % remove extension
+	\str_case:NnF \l_tmpa_str {
+		{mathutil} {\slq_load:n {\l_tmpa_str}}
+		{prooftree} {
+			\RequirePackage{bussproofs}
+			\slq_load:n {\l_tmpa_str} }
+		{FibBdl} {\slq_load_if_lua:n {\l_tmpa_str}}
+		{unimath-utility} {\slq_load_if_lua:n {\l_tmpa_str}}
+		{longvariant} {
+			\IfFileLoadedF{unimath-utility}{\slq_load_if_lua:n {unimath-utility}}
+			\slq_load_if_lua:n {\l_tmpa_str} }
+	} {
+		\msg_warning:nne {slq_commands} {nofile} {\l_tmpa_str}
+	}
+}
+
+\cs_new:Npn \UseSlqModules #1 {
+	\seq_set_from_clist:Nn \l_tmpa_seq {#1}
+	\seq_map_function:NN \l_tmpa_seq \slq_load_module:n
+}

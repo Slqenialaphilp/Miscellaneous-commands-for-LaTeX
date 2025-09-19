@@ -1,10 +1,12 @@
-\cs_if_exist:NTF \Uskewed {
-	\usepackage{xfrac}
-	\NewDocumentCommand{\vsfrac}{D(){large} o m m}{\text{\use:c{#1}\(\sfrac{#2}{#3}\)}}
-}
+\ProvidesExplFile{mathutil.tex}{2025/09/14}{1.0a}{utility for math}
+
+\sys_if_engine_luatex:TF 
 {
 	\NewDocumentCommand{\sfrac}{o m m}{{{#2} \Uskewed / \IfValueT{#1}{#1} {#3}}}
 	\NewDocumentCommand{\vsfrac}{D(){large} o m m}{\text{\use:c{#1}\({{#3} \Uskewed / \IfValueT{#2}{#2} {#4}}\)}}
+} {
+	\IfPackageLoadedF{xfrac}{\usepackage{xfrac}}
+	\NewDocumentCommand{\vsfrac}{D(){large} m m}{\text{\use:c{#1}\(\sfrac{#2}{#3}\)}}
 }
 
 \NewDocumentCommand{\quot}{>{\SplitArgument{1}{/}}m}{\quotient #1}
