@@ -1,28 +1,42 @@
 % bussproofs
-\ProvidesExplFile{prooftree.tex}{2025-09-14}{1.0}{proof tree in LK}
+\ProvidesExplFile{prooftree.tex}{2025-09-14}{1.1}{proof tree in LK}
+
+\prop_new:N \slq_prooftree_label_prop
+\prop_gset_from_keyval:Nn \slq_prooftree_label_prop {
+		{wkL}={weakening; 左},
+		{wkR}={weakening; 右},
+		{cntL}={contraction; 左},
+		{cntR}={contraction; 右},
+		{exL}={exchange; 左},
+		{exR}={exchange; 右},
+		{cut}={cut},
+		{andL}={$\land$; 左},
+		{andR}={$\land$; 右},
+		{orL}={$\lor$; 左},
+		{orR}={$\lor$; 右},
+		{impL}={$\rightarrow$; 左},
+		{impR}={$\rightarrow$; 右},
+		{notL}={$\lnot$; 左},
+		{notR}={$\lnot$; 右},
+		{allL}={$\forall$; 左},
+		{allR}={$\forall$; 右},
+		{existL}={$\exists$; 左},
+		{existR}={$\exists$; 右}
+}
+
+\NewDocumentCommand{\ProofTreeLabel}{m m}{
+	\prop_gput:Nnn \slq_prooftree_label_prop {#1} {#2}
+}
+\NewDocumentCommand{\ProofTreeLabelKV}{m}{
+	\prop_gput_from_keyval:Nn \slq_prooftree_label_prop {#1}
+}
+
 \NewDocumentCommand{\InfRule}{m}{
 	\RightLabel{\scriptsize
-	（\str_case:nnF {#1}{
-		{wkL}{weakening; 左}
-		{wkR}{weakening; 右}
-		{cntL}{contraction; 左}
-		{cntR}{contraction; 右}
-		{exL}{exchange; 左}
-		{exR}{exchange; 右}
-		{cut}{cut}
-		{andL}{$\land$; 左}
-		{andR}{$\land$; 右}
-		{orL}{$\lor$; 左}
-		{orR}{$\lor$; 右}
-		{impL}{$\rightarrow$; 左}
-		{impR}{$\rightarrow$; 右}
-		{notL}{$\lnot$; 左}
-		{notR}{$\lnot$; 右}
-		{allL}{$\forall$; 左}
-		{allR}{$\forall$; 右}
-		{existL}{$\exists$; 左}
-		{existR}{$\exists$; 右}
-	}{#1}）
+	（\prop_get:NnNTF \slq_prooftree_label_prop {#1} \l_tmpa_tl
+		{\l_tmpa_tl}
+		{#1}
+	）
 	}
 }
 \cs_new:Nn \l_infer_aux:nn {#1\fCenter #2}
